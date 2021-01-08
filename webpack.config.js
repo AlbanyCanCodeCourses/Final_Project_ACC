@@ -29,7 +29,7 @@ module.exports = {
         ]
     },
     devServer: {
-        contentBase: path.resolve(__dirname),
+        contentBase: path.resolve(__dirname, "dist"),
         watchContentBase: true,
         compress: true,
         port: 5992,

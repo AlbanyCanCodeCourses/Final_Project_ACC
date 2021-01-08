@@ -1842,11 +1842,10 @@ module.exports = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "apiKEY": () => /* binding */ apiKEY
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
 /* harmony export */ });
-var apiKEY = "10540af3ab762a4a1a5f46590a4e59cf";
-
-
+var apiKEY = "e360079e488189fe04c08695ecd7e8a1";
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (apiKey);
 
 /***/ }),
 
@@ -1865,42 +1864,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _keys_keys__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../keys/keys */ "./keys/keys.js");
+/* harmony import */ var _keys_keys_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../keys/keys.js */ "./keys/keys.js");
 /* harmony import */ var _dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./dom */ "./src/dom.js");
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./utils */ "./src/utils.js");
 
 
 
+ //request genre
 
-
-//request genre
 var requestGenre = function requestGenre(genreID, genreName) {
   var options = {
     method: 'GET',
-    url: "https://api.themoviedb.org/3/discover/movie?api_key=".concat(_keys_keys__WEBPACK_IMPORTED_MODULE_1__.apiKEY, "&language=en-US&sort_by=popularity.desc&with_genres=").concat(genreID, "&include_adult=false&include_video=false&page=1") };
-
+    url: "https://api.themoviedb.org/3/discover/movie?api_key=".concat(_keys_keys_js__WEBPACK_IMPORTED_MODULE_1__.apiKEY, "&language=en-US&sort_by=popularity.desc&with_genres=").concat(genreID, "&include_adult=false&include_video=false&page=1")
+  };
   axios__WEBPACK_IMPORTED_MODULE_0___default().request(options).then(function (response) {
     (0,_utils__WEBPACK_IMPORTED_MODULE_3__.createTitle)(genreName, _dom__WEBPACK_IMPORTED_MODULE_2__.mainContent);
     response.data.results.forEach(function (element, index) {
       var picture = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.filterPicture)(element.backdrop_path);
       var desc = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.filterDesc)(element.overview);
-      if (index > 20) {return;}
+
+      if (index > 20) {
+        return;
+      }
+
       var container = new _utils__WEBPACK_IMPORTED_MODULE_3__.MovieContainer("div", element.title, picture.filteredPicture, desc.filteredDesc, _dom__WEBPACK_IMPORTED_MODULE_2__.mainContent, element.release_date);
       container.createAndAttch();
     });
-  })["catch"](function (error) {return console.log(error);});
+  })["catch"](function (error) {
+    return console.log(error);
+  });
+}; //populate genre dropdown
 
-};
 
-
-//populate genre dropdown
 var populateGenre = function populateGenre() {
   var options = {
     method: 'GET',
-    url: "https://api.themoviedb.org/3/genre/movie/list?api_key=".concat(_keys_keys__WEBPACK_IMPORTED_MODULE_1__.apiKEY, "&language=en-US") };
-
-
-
+    url: "https://api.themoviedb.org/3/genre/movie/list?api_key=".concat(_keys_keys_js__WEBPACK_IMPORTED_MODULE_1__.apiKEY, "&language=en-US")
+  };
   axios__WEBPACK_IMPORTED_MODULE_0___default().request(options).then(function (response) {
     response.data.genres.forEach(function (element) {
       var clean = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.cleanThis)("<a class='dropdown-item' data-genre=".concat(element.id, " data-genrename=").concat(element.name, ">").concat(element.name, "</a>"));
@@ -1915,68 +1915,79 @@ var populateGenre = function populateGenre() {
   })["catch"](function (error) {
     console.error(error);
   });
+}; //search function on the page
 
-};
 
-//search function on the page
 var searchFunction = function searchFunction() {
   _dom__WEBPACK_IMPORTED_MODULE_2__.searchButton.addEventListener('click', function (e) {
     e.preventDefault();
     justSearch();
   });
+}; //search function
 
-};
 
-//search function
-var justSearch = function justSearch(appendOne, appendTwo) {
+var justSearch = function justSearch() {
   var dirtyInput = _dom__WEBPACK_IMPORTED_MODULE_2__.searchInput.value;
   var queryReadyInput = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.urlEncode)(dirtyInput, 's');
-  var cleanAppendOne = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.cleanThis)(appendOne);
-  var cleanAppendTwo = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.cleanThis)(appendTwo);
+
+  if (_dom__WEBPACK_IMPORTED_MODULE_2__.searchInput.value === "") {
+    alert("Please enter a search query.");
+    return;
+  }
+
   _dom__WEBPACK_IMPORTED_MODULE_2__.mainContent.innerHTML = "";
   var options = {
     method: 'GET',
-    url: "https://api.themoviedb.org/3/search/movie?api_key=".concat(_keys_keys__WEBPACK_IMPORTED_MODULE_1__.apiKEY, "&query=").concat(queryReadyInput).concat(cleanAppendOne).concat(cleanAppendTwo) };
-
+    url: "https://api.themoviedb.org/3/search/movie?api_key=".concat(_keys_keys_js__WEBPACK_IMPORTED_MODULE_1__.apiKEY, "&query=").concat(queryReadyInput)
+  };
   axios__WEBPACK_IMPORTED_MODULE_0___default().request(options).then(function (response) {
     _dom__WEBPACK_IMPORTED_MODULE_2__.mainContent.innerHTML = "";
-    if (response.data.results.length === 0) {alert("No results found.");}
+
+    if (response.data.results.length === 0) {
+      alert("No results found.");
+      return;
+    }
+
     response.data.results.forEach(function (element, index) {
       var picture = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.filterPicture)(element.backdrop_path);
       var desc = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.filterDesc)(element.overview);
-      if (index >= 30) {return;}
+
+      if (index >= 30) {
+        return;
+      }
+
       var container = new _utils__WEBPACK_IMPORTED_MODULE_3__.MovieContainer("div", element.title, picture.filteredPicture, desc.filteredDesc, _dom__WEBPACK_IMPORTED_MODULE_2__.mainContent, element.release_date);
       container.createAndAttch();
     });
-  })["catch"](function (error) {return console.log(error);});
-};
+  })["catch"](function (error) {
+    return console.log(error);
+  });
+}; //new movies
 
 
-
-//new movies
 var newMovies = function newMovies() {
   var d = new Date();
   _dom__WEBPACK_IMPORTED_MODULE_2__.newMoviesLink.addEventListener("click", function () {
     _dom__WEBPACK_IMPORTED_MODULE_2__.mainContent.innerHTML = "";
     var options = {
       method: 'GET',
-      url: "https://api.themoviedb.org/3/discover/movie?api_key=".concat(_keys_keys__WEBPACK_IMPORTED_MODULE_1__.apiKEY, "&language=en-US&sort_by=release_date.desc&primary_release_year=").concat(d.getFullYear(), "&include_adult=false&include_video=false&page=1") };
-
-
+      url: "https://api.themoviedb.org/3/discover/movie?api_key=".concat(_keys_keys_js__WEBPACK_IMPORTED_MODULE_1__.apiKEY, "&language=en-US&sort_by=release_date.desc&primary_release_year=").concat(d.getFullYear(), "&include_adult=false&include_video=false&page=1")
+    };
     axios__WEBPACK_IMPORTED_MODULE_0___default().request(options).then(function (response) {
       response.data.results.forEach(function (element, index) {
         var picture = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.filterPicture)(element.backdrop_path);
         var desc = (0,_utils__WEBPACK_IMPORTED_MODULE_3__.filterDesc)(element.overview);
-        if (index > 30) {return;}
+
+        if (index > 30) {
+          return;
+        }
+
         var container = new _utils__WEBPACK_IMPORTED_MODULE_3__.MovieContainer("div", element.title, picture.filteredPicture, desc.filteredDesc, _dom__WEBPACK_IMPORTED_MODULE_2__.mainContent, element.release_date);
         container.createAndAttch();
       });
     });
   });
 };
-
-
-
 
 
 
@@ -1998,16 +2009,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "newMoviesLink": () => /* binding */ newMoviesLink
 /* harmony export */ });
 var dropDownShow = document.querySelector("#navbarSupportedContent > div > div");
-
 var searchButton = document.querySelector("[data-basicSearchButton]");
-
 var searchInput = document.querySelector("[data-basicSearchInput]");
-
 var mainContent = document.querySelector(".main-content");
-
 var newMoviesLink = document.querySelector("[data-newMovies]");
-
-
 
 
 /***/ }),
@@ -2023,11 +2028,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./app */ "./src/app.js");
 //*********CSS Styles********//
 __webpack_require__(/*! ./css/navHeader.css */ "./src/css/navHeader.css");
+
 __webpack_require__(/*! ./css/navComponent.css */ "./src/css/navComponent.css");
+
 __webpack_require__(/*! ./css/buttons.css */ "./src/css/buttons.css");
+
 __webpack_require__(/*! ./css/mainContent.css */ "./src/css/mainContent.css");
-__webpack_require__(/*! ./css/footer.css */ "./src/css/footer.css");
-//***************************//
+
+__webpack_require__(/*! ./css/footer.css */ "./src/css/footer.css"); //***************************//
 
 
 
@@ -2055,14 +2063,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var dompurify__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! dompurify */ "./node_modules/dompurify/dist/purify.js");
 /* harmony import */ var dompurify__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(dompurify__WEBPACK_IMPORTED_MODULE_0__);
-function _classCallCheck(instance, Constructor) {if (!(instance instanceof Constructor)) {throw new TypeError("Cannot call a class as a function");}}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+ //clean input for html strings
+
+var cleanThis = function cleanThis(htmlString) {
+  return dompurify__WEBPACK_IMPORTED_MODULE_0___default().sanitize(htmlString);
+}; //do stuff with url encoding, flags are for if there is a different case in the future
 
 
-//clean input for html strings
-var cleanThis = function cleanThis(htmlString) {return dompurify__WEBPACK_IMPORTED_MODULE_0___default().sanitize(htmlString);};
-
-
-//do stuff with url encoding, flags are for if there is a different case in the future
 var urlEncode = function urlEncode(htmlInput, flags) {
   if (flags === 's') {
     var cleanInput = cleanThis(htmlInput);
@@ -2073,6 +2086,7 @@ var urlEncode = function urlEncode(htmlInput, flags) {
 
 var filterPicture = function filterPicture(backdrop_path) {
   var filteredPicture;
+
   if (backdrop_path === null) {
     filteredPicture = "https://www.hallaminternet.com/assets/show.jpg";
   } else if (backdrop_path !== null) {
@@ -2080,37 +2094,39 @@ var filterPicture = function filterPicture(backdrop_path) {
   }
 
   return {
-    filteredPicture: filteredPicture };
-
-};
-
-//Movie element container
-var MovieContainer =
-function MovieContainer(parentElement, title, picture, desc, location, release) {var _this = this;_classCallCheck(this, MovieContainer);this.
+    filteredPicture: filteredPicture
+  };
+}; //Movie element container
 
 
+var MovieContainer = /*#__PURE__*/function () {
+  function MovieContainer(parentElement, title, picture, desc, location, release) {
+    _classCallCheck(this, MovieContainer);
 
+    this.container = document.createElement(parentElement); // this.imagePrepend = "https://image.tmdb.org/t/p/w500/";
 
+    this.picture = picture;
+    this.title = title;
+    this.desc = desc;
+    this.htmlString = "\n            <h2>".concat(title, "</h2>\n            <h6><b>Release Date: </b> ").concat(release, "</h6>\n            <figure class=\"figure\">\n                <img src=\"").concat(this.picture, "\" class=\"figure-img img-fluid rounded\"  alt=").concat(this.title, " />\n                <figcaption class=\"figure-caption\">").concat(this.desc, "</figcaption>\n            </figure>\n        ");
+    this.cleanString = dompurify__WEBPACK_IMPORTED_MODULE_0___default().sanitize(this.htmlString);
+    this.location = location;
+  }
 
+  _createClass(MovieContainer, [{
+    key: "createAndAttch",
+    value: function createAndAttch() {
+      this.container.insertAdjacentHTML("beforeend", this.cleanString);
+      this.location.appendChild(this.container);
+    }
+  }]);
 
-
-
-
-
-
-
-
-
-
-
-  createAndAttch = function () {
-    _this.container.insertAdjacentHTML("beforeend", _this.cleanString);
-    _this.location.appendChild(_this.container);
-  };this.container = document.createElement(parentElement); // this.imagePrepend = "https://image.tmdb.org/t/p/w500/";
-  this.picture = picture;this.title = title;this.desc = desc;this.htmlString = "\n            <h2>".concat(title, "</h2>\n            <h6><b>Release Date: </b> ").concat(release, "</h6>\n            <figure class=\"figure\">\n                <img src=\"").concat(this.picture, "\" class=\"figure-img img-fluid rounded\"  alt=").concat(this.title, " />\n                <figcaption class=\"figure-caption\">").concat(this.desc, "</figcaption>\n            </figure>\n        ");this.cleanString = dompurify__WEBPACK_IMPORTED_MODULE_0___default().sanitize(this.htmlString);this.location = location;};
+  return MovieContainer;
+}();
 
 var filterDesc = function filterDesc(desc) {
   var filteredDesc;
+
   if (desc === "") {
     filteredDesc = "Sorry, there is no description available";
   } else if (desc !== null) {
@@ -2118,17 +2134,15 @@ var filterDesc = function filterDesc(desc) {
   }
 
   return {
-    filteredDesc: filteredDesc };
-
+    filteredDesc: filteredDesc
+  };
 };
-
 
 var createTitle = function createTitle(genreName, location) {
   var title = document.createElement("h1");
   title.innerHTML = genreName;
   location.appendChild(title);
 };
-
 
 
 
@@ -2151,7 +2165,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "#dropdownMenuButton {\n    margin-right:10px;\n    background: transparent;\n    border:none;\n    color: black;\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "#dropdownMenuButton {\r\n    margin-right:10px;\r\n    background: transparent;\r\n    border:none;\r\n    color: black;\r\n}\r\n\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2175,7 +2189,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "div.footer {\n    width: 60%;\n    margin:auto;\n}\n\n.hrTwo {\n    width: 80%;\n}\n\n.hrThree {\n    width: 65%;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "div.footer {\r\n    width: 60%;\r\n    margin:auto;\r\n}\r\n\r\n.hrTwo {\r\n    width: 80%;\r\n}\r\n\r\n.hrThree {\r\n    width: 65%;\r\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2199,7 +2213,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "body {\n    text-align: center !important;\n    background: #f8f9fa!important;\n}\ndiv.main-content {\n    display:flex;\n    flex-wrap: wrap;\n    justify-content: center;\n    margin-left: 5%;\n}\n\n\n div.main-content div {\n    display: block;\n    padding:1%;\n    margin: 1%;\n    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n    height: 100%;\n    width: 45%;\n} \n\ndiv.main-content div * {\n    text-align: center !important;\n    justify-content: center;\n}\n\ndiv.main-content h1 {\n    text-align: center;\n    display: block;\n    width: 100%;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "body {\r\n    text-align: center !important;\r\n    background: #f8f9fa!important;\r\n}\r\ndiv.main-content {\r\n    display:flex;\r\n    flex-wrap: wrap;\r\n    justify-content: center;\r\n    margin-left: 5%;\r\n}\r\n\r\n\r\n div.main-content div {\r\n    display: block;\r\n    padding:1%;\r\n    margin: 1%;\r\n    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\r\n    height: 100%;\r\n    width: 45%;\r\n} \r\n\r\ndiv.main-content div * {\r\n    text-align: center !important;\r\n    justify-content: center;\r\n}\r\n\r\ndiv.main-content h1 {\r\n    text-align: center;\r\n    display: block;\r\n    width: 100%;\r\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2223,7 +2237,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "nav.navbar * {\n    justify-content: center !important;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "nav.navbar * {\r\n    justify-content: center !important;\r\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -2247,7 +2261,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "nav.navHeader * {\n    justify-content: center;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "nav.navHeader * {\r\n    justify-content: center;\r\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

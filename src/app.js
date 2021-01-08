@@ -1,5 +1,5 @@
 import axios from "axios";
-import {apiKEY} from "../keys/keys";
+import {apiKEY} from "../keys/keys.js";
 import  * as DOMEl from "./dom";
 import {cleanThis, urlEncode, createTitle,MovieContainer, filterPicture, filterDesc} from "./utils";
 
